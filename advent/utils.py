@@ -1,4 +1,4 @@
-from typing import Sequence, Union, Optional
+from typing import Iterator, List, Sequence, TypeVar, Union, Optional
 
 
 def binseq_to_int(binseq: Sequence[Union[str, int, bool]]) -> int:
@@ -16,3 +16,10 @@ def binseq_to_int(binseq: Sequence[Union[str, int, bool]]) -> int:
 def add_wrap(val: int, incr: int, max_val: int, start_at_one: Optional[bool] = True):
     """Add incr to val, and wrap around at 1 if val+incr > max_val"""
     return (val + incr - 1) % max_val + (1 if start_at_one else 0)
+
+
+T = TypeVar('T')
+
+
+def chunk(s: Sequence[T], count: int) -> List[Sequence[T]]:
+    return [s[count * i:count * i + count] for i in range(len(s) // count)]

@@ -2,12 +2,14 @@ import io
 
 from advent.days.day02 import first, second
 
-data = """"""
+data = """A Y
+B X
+C Z"""
 
 
 def test_first():
-    assert True is False
+    assert first(io.StringIO(data)) == 15
 
 
 def test_second():
-    assert True is False
+    assert second(io.StringIO(data)) == 12
