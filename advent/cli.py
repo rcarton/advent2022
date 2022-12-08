@@ -4,14 +4,10 @@ Command line interface for advent of code 2021.
 
 import importlib
 import time
-from pathlib import Path
 
 import click
 
-
-def get_input_filename_for_day(day_num: int) -> Path:
-    """Return the Path to the input file for a given day."""
-    return Path(Path(__file__).parent.parent.absolute(), "data", f"day{day_num:02}.txt")
+from .utils import get_input_filename_for_day
 
 
 @click.command()

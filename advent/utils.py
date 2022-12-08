@@ -1,4 +1,6 @@
-from typing import Iterator, List, Sequence, TypeVar, Union, Optional
+import io
+from pathlib import Path
+from typing import Iterator, List, Sequence, TextIO, TypeVar, Union, Optional
 
 
 def binseq_to_int(binseq: Sequence[Union[str, int, bool]]) -> int:
@@ -23,3 +25,15 @@ T = TypeVar('T')
 
 def chunk(s: Sequence[T], count: int) -> List[Sequence[T]]:
     return [s[count * i:count * i + count] for i in range(len(s) // count)]
+
+
+def get_input_filename_for_day(day_num: int) -> Path:
+    """Return the Path to the input file for a given day."""
+    return Path(Path(__file__).parent.parent.absolute(), "data", f"day{day_num:02}.txt")
+
+
+def get_data_for_day(day_num: int) -> TextIO:
+    """Get data for tests typically."""
+
+    with open(get_input_filename_for_day(day_num)) as reader:
+        return io.StringIO(reader.read())
