@@ -1,14 +1,175 @@
 import io
 
-from advent.days.day10 import first, second
+from advent.days.day10 import Machine, first, second
 
-data = """"""
+data = """addx 15
+addx -11
+addx 6
+addx -3
+addx 5
+addx -1
+addx -8
+addx 13
+addx 4
+noop
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx 5
+addx -1
+addx -35
+addx 1
+addx 24
+addx -19
+addx 1
+addx 16
+addx -11
+noop
+noop
+addx 21
+addx -15
+noop
+noop
+addx -3
+addx 9
+addx 1
+addx -3
+addx 8
+addx 1
+addx 5
+noop
+noop
+noop
+noop
+noop
+addx -36
+noop
+addx 1
+addx 7
+noop
+noop
+noop
+addx 2
+addx 6
+noop
+noop
+noop
+noop
+noop
+addx 1
+noop
+noop
+addx 7
+addx 1
+noop
+addx -13
+addx 13
+addx 7
+noop
+addx 1
+addx -33
+noop
+noop
+noop
+addx 2
+noop
+noop
+noop
+addx 8
+noop
+addx -1
+addx 2
+addx 1
+noop
+addx 17
+addx -9
+addx 1
+addx 1
+addx -3
+addx 11
+noop
+noop
+addx 1
+noop
+addx 1
+noop
+noop
+addx -13
+addx -19
+addx 1
+addx 3
+addx 26
+addx -30
+addx 12
+addx -1
+addx 3
+addx 1
+noop
+noop
+noop
+addx -9
+addx 18
+addx 1
+addx 2
+noop
+noop
+addx 9
+noop
+noop
+noop
+addx -1
+addx 2
+addx -37
+addx 1
+addx 3
+noop
+addx 15
+addx -21
+addx 22
+addx -6
+addx 1
+noop
+addx 2
+addx 1
+noop
+addx -10
+noop
+noop
+addx 20
+addx 1
+addx 2
+addx 2
+addx -6
+addx -11
+noop
+noop
+noop
+"""
 data_io = io.StringIO(data)
 
 
+def test_run():
+    machine = Machine()
+    machine.run('noop')
+    assert machine.x == 1
+    assert machine.cycle == 1
+
+    machine.run('addx 3')
+    assert machine.x == 4
+    assert machine.cycle == 3
+
+    machine.run('addx -5')
+    assert machine.x == -1
+    assert machine.cycle == 5
+
+
 def test_first():
-    assert True is False
+    assert first(io.StringIO(data)) == 13140
 
 
 def test_second():
-    assert True is False
+    assert second(io.StringIO(data)) == -1
