@@ -2,13 +2,18 @@ import io
 
 from advent.days.day12 import first, second
 
-data = """"""
+data = """Sabqponm
+abcryxxl
+accszExk
+acctuvwj
+abdefghi
+"""
 data_io = io.StringIO(data)
 
 
 def test_first():
-    assert True is False
+    assert first(io.StringIO(data)) == 31
 
 
 def test_second():
-    assert True is False
+    assert second(io.StringIO(data)) == 29
