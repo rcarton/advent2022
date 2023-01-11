@@ -142,24 +142,40 @@ def repr_chamber(c: Chamber, r: Rock | None) -> str:
     return ''.join(o)
 
 
-def compress(c: Chamber, size: int = 500) -> int:
-    if (l := len(c)) < size:
-        return 0
-
-    for i in range(size):
+def compress(c: Chamber) -> int:
+    l = len(c)
+    for i in range(l):
         r1, r2 = c[l - i - 1], c[l - i - 2]
         if r1 | r2 == FULL_LINE:
             # We can compress, everything before this row can be discarded
             return l - i - 2
 
 
+CACHE = {}
+
+
+def cache(i_jets: int, i_shape: int, c: Chamber):
+    h = hash((i_jets, i_shape, tuple(c)))
+    if h in CACHE:
+        raise Exception(f'FOUNNNNND: {(i_jets, i_shape, tuple(c))}')
+
+def try_period(c: Chamber):
+    for i in range(len(c) // 100, len(c) // 10):
+        if i % 100_000 == 0:
+            print(f'Still looking i={i}')
+        if c[:i] == c[i:2*i]:
+            raise Exception(f'Found period? i={i} len(c)={len(c)}')
+
+
+
 def first(input: TextIO, max_rock=2023) -> int:
     c = DEFAULT_CHAMBER
-    shapes = it.cycle(SHAPES)
-    jets = it.cycle(input.read().rstrip())
+    shapes = it.cycle(enumerate(SHAPES))
+    jets = it.cycle(enumerate(input.read().rstrip()))
 
-    r = Rock(next(shapes))
-    m = next(jets)
+    i_shape, shape = next(shapes)
+    r = Rock(shape)
+    i_jets, m = next(jets)
     rock_count = 1
 
     compressed = 0
@@ -168,23 +184,29 @@ def first(input: TextIO, max_rock=2023) -> int:
         moved = move(r, c, m)
 
         if not moved and m == 'v':
-            r = Rock(next(shapes))
+            i_shape, shape = next(shapes)
+            r = Rock(shape)
             rock_count += 1
-
             # Try to compress the tower
-            if rock_count % 1000 == 0:
-                compression = compress(c)
-                if compression:
-                    c = c[compression:]
-                    compressed += compression
-                    # print(f'Compressed by {compression}')
+            # compression = compress(c)
+            # if compression:
+            #     c = c[compression:]
+            #     compressed += compression
+            #
+            # cache(i_jets, i_shape, c)
 
             if rock_count % 1_000_000 == 0:
                 print(f'rock_count={rock_count}, height={len(c) - 1 + compressed}')
                 print(repr_chamber(c, r))
 
+                print("Looking for period..")
+                try_period(c)
+                print("not found")
 
-        m = next(jets) if m == 'v' else 'v'
+        if m == 'v':
+            i_jets, m = next(jets)
+        else:
+            m = 'v'
 
     return len(c) - 1 + compressed
 
